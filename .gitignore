@@ -1,3 +1,4 @@
 .claude
 dataset.csv
 *.pyc
+.venv/
