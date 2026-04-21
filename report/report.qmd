@@ -1,6 +1,6 @@
 ---
-title: "Implementacion desde cero de kNN para clasificacion y recomendaciones sobre trabajos del cluster Kabre"
-subtitle: "Proyecto 1 - MC-8851 Optimizacion y Programacion Numerica"
+title: "Implementación desde cero de kNN para clasificación y recomendaciones sobre trabajos del cluster Kabre"
+subtitle: "Proyecto 1 - MC-8851 Optimización y Programación Numérica"
 author:
   - "Daniel Garbanzo"
   - "Luis Carlos Navarro Todd"
@@ -24,9 +24,9 @@ execute:
 **Fuente del dataset:** `dataset.csv` del repositorio Project-1-CeNAT  
 **Entregable base:** `kabre_jobs_xai.ipynb`
 
-# 1. Introduccion
+# 1. Introducción
 
-Los clusters de computo de alto rendimiento (HPC) son infraestructuras compartidas donde muchos usuarios envían trabajos con requerimientos variables de CPUs, memoria, nodos, prioridad, tiempo limite y colas de ejecución. En este entorno, una configuración inadecuada no solo incrementa la probabilidad de fallo, sino que también consume recursos de computo, tiempo de cola y esfuerzo de investigación sin producir un resultado útil. En Kabre, operado por CeNAT/CONARE, este problema tiene relevancia directa porque el historial de ejecuciones muestra que una proporción considerable de jobs no termina exitosamente.
+Los clusters de cómputo de alto rendimiento (HPC) son infraestructuras compartidas donde muchos usuarios envían trabajos con requerimientos variables de CPUs, memoria, nodos, prioridad, tiempo limite y colas de ejecución. En este entorno, una configuración inadecuada no solo incrementa la probabilidad de fallo, sino que también consume recursos de computo, tiempo de cola y esfuerzo de investigación sin producir un resultado útil. En Kabre, operado por CeNAT/CONARE, este problema tiene relevancia directa porque el historial de ejecuciones muestra que una proporción considerable de jobs no termina exitosamente.
 
 El objetivo de este proyecto fue construir, desde cero, un sistema basado en k-Nearest Neighbors (kNN) capaz de responder dos preguntas prácticas: primero, si un trabajo nuevo tiene alta o baja probabilidad de completarse exitosamente; segundo, que cambios en su configuración podrian aumentar esa probabilidad. La pregunta analítica que guió el trabajo fue la siguiente: **"Es posible predecir con precisión razonable si un trabajo en el cluster Kabre se completara exitosamente y, si no, que cambios especificos en su configuración podrian aumentar esa probabilidad?"**
 
@@ -62,7 +62,7 @@ $$
 
 donde en este trabajo se obtiene finalmente una matriz aproximada de tamaño $42745 \times 15$.
 
-## 2.2 Normalizacion y construccion del espacio de caracteristicas
+## 2.2 Normalización y construcción del espacio de características
 
 En kNN, la cercanía entre puntos solo tiene sentido si las variables se encuentran en escalas comparables. Si una feature posee magnitudes mucho mayores que otra, dominara la distancia total aunque su importancia real no sea superior. Por esta razón, el proyecto aplico normalizacion min-max a las variables numericas:
 
@@ -96,7 +96,7 @@ Una predicción negativa es más útil si puede acompañarse de una recomendaci�
 
 La propuesta implementada en el notebook usa una búsqueda codiciosa sobre features modificables. En cada iteración se evalua cual cambio incremental produce la mayor mejora en la probabilidad predicha de la clase objetivo. Aunque esto no produce garantias causales, si ofrece una forma interpretable de orientar decisiones operativas antes del envio del job.
 
-# 3. Descripcion del dataset
+# 3. Descripción del dataset
 
 ## 3.1 Origen y contexto real
 
@@ -195,7 +195,7 @@ El notebook divide los datos con un esquema estratificado de entrenamiento y pru
 
 La normalización es esencial para kNN, porque el algoritmo compara puntos directamente en el espacio de características. Sin este paso, variables de gran magnitud como memoria o prioridad dominarian la similitud total.
 
-## 4.3 Implementacion desde cero del algoritmo kNN
+## 4.3 Implementación desde cero del algoritmo kNN
 
 La clase `KNNClassifier` del notebook se implementa sin usar `sklearn.fit()` ni equivalentes. La lógica central incluye:
 
@@ -223,7 +223,7 @@ Además de clasificar, el notebook implementa tres mecanismos de interpretación
 
 La generación contrafactual se basa en una busqueda codiciosa. En cada paso se perturba una feature mutable y se conserva el cambio que produce la mayor ganancia en la probabilidad predicha de `COMPLETED`. Este procedimiento se repite hasta cruzar la frontera de decisión o hasta agotar las iteraciones permitidas.
 
-## 4.5 Comentarios de diseno
+## 4.5 Comentarios de diseño
 
 Desde el punto de vista de ingenieria, la implementación privilegia claridad sobre optimización extrema. El algoritmo es suficientemente eficiente para demostrar el metodo en el dataset actual, pero no esta pensado como solución de producción para inferencia masiva en tiempo real. Esto es coherente con el objetivo del curso: explicitar el uso de algebra lineal, normas y representaciones vectoriales dentro de un algoritmo de aprendizaje automatico implementado manualmente.
 
@@ -254,7 +254,7 @@ Salida: clasificador kNN, metricas de evaluacion y recomendaciones
 
 ## 4.7 Fragmentos clave con anotaciones
 
-### Construccion del vector de caracteristicas
+### Construcción del vector de características
 
 ```python
 vec = [
@@ -283,7 +283,7 @@ def _euclidean_batch(query: np.ndarray, X_train: np.ndarray) -> np.ndarray:
 
 Aqui aparece de forma directa la norma L2 del curso. El uso vectorizado permite calcular la distancia entre un punto de consulta y todo el conjunto de entrenamiento en una sola operación matricial por columnas.
 
-### Seleccion de vecinos y decision final
+### Selección de vecinos y decisión final
 
 ```python
 dists = self._distances(query)
@@ -294,9 +294,9 @@ return dists[k_idx], self._y[k_idx]
 
 Este bloque implementa el nucleo de kNN: calcula todas las distancias, localiza los `k` vecinos más cercanos y ordena esos vecinos por cercania. A partir de esta salida se construye la votacion mayoritaria o la probabilidad por proporcion de clases.
 
-# 5. Resultados y analisis
+# 5. Resultados y análisis
 
-## 5.1 Seleccion de `k`
+## 5.1 Selección de `k`
 
 El notebook reporta una validación cruzada de 10 folds sobre varios valores de `k`. Los resultados mostrados son los siguientes:
 
@@ -313,7 +313,7 @@ Aunque `k=3` reporta la mayor `accuracy` y el mayor `AUC`, el notebook conserva 
 
 ![Curvas de validacion cruzada para `accuracy`, `RMSE`, `F1-score` y `AUC` en funcion de `k`. La figura muestra la tendencia decreciente del rendimiento al aumentar excesivamente el numero de vecinos.](images/figure_06_cell72_exec99.png){fig-cap="Visualización de la validación cruzada para distintos valores de `k`." width=92%}
 
-## 5.2 Evaluacion final del clasificador
+## 5.2 Evaluación final del clasificador
 
 Con `k=10` y distancia euclidiana, el notebook reporta las siguientes métricas finales sobre el conjunto de prueba:
 
@@ -368,7 +368,7 @@ Los resultados muestran que el sistema es útil, pero también revelan sus lími
 
 La parte más innovadora del proyecto es la unión entre clasificación y recomendaciones. Aún cuando solo alrededor de un tercio de los casos procesados obtienen un contrafactual válido, ese resultado sigue siendo valioso porque convierte una predicción abstracta en una sugerencia operativa. En un contexto HPC real, incluso una mejora modesta en la probabilidad de completar correctamente un trabajo puede traducirse en ahorro de tiempo y recursos.
 
-## 5.6 Comparacion con baseline
+## 5.6 Comparación con baseline
 
 La rúbrica solicita una comparación con baseline. En este informe se adopta como baseline explícito el **clasificador de clase mayoritaria**, es decir, una regla que siempre predice "no completado". Dado que la clase positiva `COMPLETED` representa `35.90%` del dataset, la clase negativa agrupa aproximadamente `64.10%` de los casos; por lo tanto, un baseline ingenuo alcanzaría alrededor de `0.6410` de `accuracy` sin aprender ninguna relación entre variables.
 
@@ -388,7 +388,7 @@ $$
 
 donde las coordenadas incluyen variables numericas y columnas one-hot de partición y QOS. Sin esta representación vectorial, el algoritmo kNN no podria operar.
 
-## 6.2 Normalizacion de datos
+## 6.2 Normalización de datos
 
 La normalización min-max se aplico a todas las variables numéricas para llevarlas al rango $[0,1]$:
 
@@ -418,7 +418,7 @@ $$
 
 Su inclusión es importante desde el punto de vista del curso porque permite contrastar dos formas distintas de medir similitud en un espacio vectorial. Aunque el modelo final del notebook no usa L1 para la evaluación definitiva, la función si forma parte de la implementación y muestra como el algoritmo puede adaptarse a diferentes nociones de cercanía sobre el mismo espacio de `15` features y `42,745` observaciones procesadas. El resultado numérico asociado a este concepto dentro del notebook es precisamente ese espacio final de trabajo, sobre el cual la distancia Manhattan queda definida componente a componente.
 
-## 6.5 Combinaciones lineales en la votacion ponderada
+## 6.5 Combinaciones lineales en la votación ponderada
 
 El notebook incluye una versión opcional de kNN con votación ponderada por distancia. En ese caso, la contribución de cada vecino se calcula como:
 
