@@ -7,7 +7,8 @@ author:
   - "Ricardo Shum Estrada"
 date: "2026-04-21"
 bibliography: references.bib
-execute: false
+execute:
+  enabled: false
 ---
 
 **Integrantes y carnes**

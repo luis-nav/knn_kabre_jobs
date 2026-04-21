@@ -13,19 +13,20 @@ Este directorio contiene un borrador del informe en Quarto Markdown.
 
 - El informe ya incluye una seccion de referencias redactada manualmente en estilo APA.
 - `references.bib` queda listo para automatizar citas mas adelante.
-- Todavia no se han exportado las figuras definitivas del notebook; por eso el borrador usa marcadores de posicion para imagenes.
+- Las figuras del notebook ya fueron exportadas al directorio `images/` y enlazadas dentro de `report.qmd`.
+- Ya existe una version renderizada en PDF: `report/report.pdf`.
 
 ## Renderizado
 
-En este entorno no estan instalados `quarto`, `pandoc` ni una distribucion LaTeX, asi que el renderizado a PDF no se puede ejecutar todavia desde aqui.
+En este entorno ya quedaron instalados `quarto` y TinyTeX, por lo que el renderizado local a PDF funciona.
 
-Cuando la herramienta este instalada, los comandos esperados son:
+El comando usado para generar el PDF es:
 
 ```bash
 quarto render report.qmd --to pdf
 ```
 
-o bien:
+Tambien se puede generar una version HTML con:
 
 ```bash
 quarto render report.qmd --to html
