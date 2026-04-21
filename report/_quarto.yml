@@ -1,0 +1,14 @@
+project:
+  type: default
+
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    geometry:
+      - margin=1in
+  html:
+    toc: true
+    number-sections: true
+
+lang: es
