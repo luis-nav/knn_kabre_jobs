@@ -141,41 +141,53 @@ $$
 donde $\eta$ es la tasa de aprendizaje y $\epsilon$ es una constante pequeña que evita divisiones por cero. Los valores recomendados por los autores originales son $\beta_1 = 0.9$, $\beta_2 = 0.999$ y $\epsilon = 10^{-8}$ (Kingma & Ba, 2015). Gracias a esta combinación de momentum y escalamiento adaptativo, Adam suele converger más rápido y de forma más estable que el descenso de gradiente estocástico clásico en arquitecturas profundas, lo que explica su adopción generalizada como optimizador por defecto en la práctica moderna de deep learning (Goodfellow et al., 2016).
 
 # Descripción del dataset
-El conjunto de datos experimental que se utiliz´o fue el
-registro de trabajos de la herramienta SLURM en el cl´uster
-de c´omputo Kabr´e desde junio de 2024 hasta junio de 2026.
-El cl´uster contaba con 5 particiones con arquitecturas distintas,
-Andalan, Dribe, Kur´a, Nu y Nukwa. Tambi´en, hay sub-
-particiones para diferentes prop´ositos como trabajos largos con
-long, trabajos multi-nodo con wide o trabajos para depuraci´on
+El conjunto de datos experimental que se utilizó fue el
+registro de trabajos de la herramienta SLURM en el clúster
+de cómputo Kabré desde junio de 2024 hasta junio de 2026.
+El clúster contaba con 5 particiones con arquitecturas distintas,
+Andalan, Dribe, Kurá, Nu y Nukwa. También, hay sub-particiones para diferentes propósitos como trabajos largos con
+long, trabajos multi-nodo con wide o trabajos para depuración
 debug.
-Los registros ten´ıan 12 diferentes variables, observadas en
+
+Los registros tenían 12 diferentes variables, observadas en
 el Cuadro I. Algunas variables son mediciones que el sistema
-toma despu´es del trabajo como el tiempo de CPU utilizado, la
-energ´ıa total consumida y el estado final del trabajo. Estas
+toma después del trabajo como el tiempo de CPU utilizado, la
+energía total consumida y el estado final del trabajo. Estas
 variables no son conocidas antes de enviar el trabajo, por
 lo tanto, se pueden usar como variables objetivo usando
-diferentes modelos de regresi´on o clasificaci´on. En el contexto
-de esta investigaci´on, el estado final del trabajo es la variable
+diferentes modelos de regresión o clasificación. En el contexto
+de esta investigación, el estado final del trabajo es la variable
 objetivo, ya que intentamos modelar si un trabajo va a tener
-de estado final ’COMPLETED’ o no. El resto de variables se
-definen al enviar el trabajo incluyendo el n´umero solicitado
-de CPUs, la memoria, el n´umero de nodos, el tiempo de CPU
-reservado, la marca de tiempo de env´ıo, el l´ımite de tiempo
-del trabajo, la partici´on del cl´uster por usar, la prioridad, y la
+de estado final 'COMPLETED' o no. El resto de variables se
+definen al enviar el trabajo incluyendo el número solicitado
+de CPUs, la memoria, el número de nodos, el tiempo de CPU
+reservado, la marca de tiempo de envío, el límite de tiempo
+del trabajo, la partición del clúster por usar, la prioridad, y la
 clase de calidad de servicio (QOS).
+
 El conjunto de datos cuenta con 229,466 registros de
-trabajos del cl´uster. Inicialmente se trabaj´o con set de datos
-desbalanceado, con los datos entre 2024 y 2025. Se ten´ıa un
-desbalance en la distribuci´on ya que solo un 35.9 % de los
-trabajos ten´ıan estado ’COMPLETED’. Este desbalance de
+trabajos del clúster. Inicialmente se trabajó con set de datos
+desbalanceado, con los datos entre 2024 y 2025. Se tenía un
+desbalance en la distribución ya que solo un 35.9 % de los
+trabajos tenían estado 'COMPLETED'. Este desbalance de
 14 % comparado con el resto de estados es bastante grande, sin
-embargo, evidencia el comportamiento natural de un cl´uster
+embargo, evidencia el comportamiento natural de un clúster
 con usuarios variados. A pesar de que el desbalance refleja de
-manera m´as fiel la proporci´on de trabajos completados contra
-trabajos fallidos, se consigui´o una extensi´on del conjunto de
+manera más fiel la proporción de trabajos completados contra
+trabajos fallidos, se consiguió una extensión del conjunto de
 datos original para aumentar la calidad de datos utilizados
-para el entrenamiento, contando con los datos hasta inicios de junio de 2026. El nuevo conjunto de datos tiene 41.8% de trabajos con estado ’COMPLETED’ y 49.2% con estado ’FAILED’, lo que reduce el desbalance a un 8.2 % y mejora la representatividad de los datos para el entrenamiento del modelo.
+para el entrenamiento, contando con los datos hasta inicios de junio de 2026. El nuevo conjunto de datos tiene 41.8% de trabajos con estado 'COMPLETED' y 49.2% con estado 'FAILED', lo que reduce el desbalance a un 8.2 % y mejora la representatividad de los datos para el entrenamiento del modelo.
+
+# Implementación
+La implementación del modelo MLP se realizó utilizando Python y la biblioteca Numpy. El modelo consta de una capa de entrada, una capa oculta con 64 neuronas y una capa de salida con una neurona para la clasificación binaria. Se utilizó la función de activación ReLU en la capa oculta y la función sigmoide en la capa de salida. El modelo se entrenó utilizando el algoritmo de optimización Adam, con una tasa de aprendizaje de 0.001, $\beta_1$ de 0.9, $\beta_2$ de 0.999 y $\epsilon$ de $10^{-8}$. El entrenamiento se realizó durante 60 épocas con un tamaño de lote de 128. Se implementó la función de pérdida, la función de activación, el algoritmo de backpropagation y el optimizador Adam desde cero, sin utilizar bibliotecas de machine learning preexistentes.
+
+Baseline e implementación de otros modelos de clasificación.
+
+# Resultados y Análisis
+
+# Conceptos del Curso Aplicados
+
+# Conclusiones
 
 # Referencias
 
